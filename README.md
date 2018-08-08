@@ -1,25 +1,27 @@
-Example configurations for Postgresql running on Docker containers with streaming replication, logical replication and pgPool
+Example configurations for Postgresql running on Docker containers with streaming and logical replication
 
 Containers running:
  - Postgresq 9.4 Master Instance
  - Postgresq 9.6 With Logical Replication from Master 9.4
- - [In Progress] Postgresq 9.4 Standby Instance
- - [In Progress] Pgpool 3.4.7 with loadbalancer and master/slave configuration.
+ - [TODO] Postgresq 10 With Logical Replication from Master 9.6
+ - [TODO] Postgresq 11 With Logical Replication from Master 9.6
 
 
 ## Start instances.
 
-## Mater Databases
+## Master Databases
 ```
-$ docker-compose down && docker-compose build database_master database_master_96 && docker-compose up database_master database_master_96
+$ docker-compose down
+$ docker-compose build database_master_94 database_master_96 database_master_11
+$ docker-compose up database_master_94 database_master_96 database_master_11
 ```
 
 ## Set up logical replication:
 
 On master (9.4)
 
-```bash
-$  docker-compose -f docker-compose.yml exec database_master bash
+```
+$  docker-compose -f docker-compose.yml exec database_master_94 bash
 root@770bfb0bca84:/# su -l postgres
 No directory, logging in with HOME=/
 postgres=# \i /tmp/postgresql/setup_logical_replication.sql
@@ -57,7 +59,7 @@ example_db=# select count(1) from t_random;
 
 On master 9.6
 
-```bash
+```
 $ docker-compose -f docker-compose.yml exec database_master_96 bash
 root@ec623283174f:/# su -l postgres
 No directory, logging in with HOME=/

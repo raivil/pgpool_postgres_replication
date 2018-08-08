@@ -24,17 +24,6 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
 EOSQL
 echo "Creating example database complete."
 
-echo "Creating pgpool database and extensions..."
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-   CREATE ROLE pgpool PASSWORD 'abc123' SUPERUSER LOGIN;
-   CREATE DATABASE pgpool owner pgpool;
-   GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} to pgpool;
-   CREATE EXTENSION pgpool_regclass;
-   CREATE EXTENSION pgpool_recovery;
-   CREATE EXTENSION pgpool_adm;
-EOSQL
-echo "Creating PGPOOL database/extensions complete."
-
 mkdir /var/lib/postgresql/archive
 chown postgres:postgres /var/lib/postgresql/archive
 chown -R postgres:postgres ${PGDATA}

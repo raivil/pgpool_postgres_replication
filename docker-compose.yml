@@ -1,6 +1,23 @@
 version: '2'
 
 services:
+  database_master_11:
+    build: database_master_11/
+    environment:
+      NODE_NAME: "master"
+      POSTGRES_PASSWORD: mysecretpassword
+      REP_USER: replication
+      REP_PASS: rep123
+      REP_PASS_MD5: e94f9a8965dd126eca6be98135abef0b
+      DB_NAME: example_db
+      DB_USER: example_user
+      DB_PASS: abc123
+      DB_PASS_MD5: 28d91d9f85d344cb91ae59a183de5358
+    volumes:
+      - ./database_master_11/init-master.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./database_master_11:/tmp/postgresql
+    ports:
+      - 5431:5432
   database_master_96:
     build: database_master_96/
     environment:
@@ -18,8 +35,8 @@ services:
       - ./database_master_96:/tmp/postgresql
     ports:
       - 5431:5432
-  database_master:
-    build: database_master/
+  database_master_94:
+    build: database_master_94/
     environment:
       NODE_NAME: "master"
       POSTGRES_PASSWORD: mysecretpassword
@@ -35,8 +52,8 @@ services:
       - ./database_master:/tmp/postgresql
     ports:
       - 5433:5432
-  database_slave:
-    build: database_slave/
+  database_slave_94:
+    build: database_slave_94/
     network_mode: "host"
     environment:
       NODE_NAME: "slave"
